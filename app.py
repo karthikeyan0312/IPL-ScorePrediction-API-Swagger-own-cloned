@@ -92,7 +92,7 @@ def predict_score(overs, wickets, runs, wickets_last_5, runs_last_5, bat_team, b
             # because i removed first columns for prevent dummy variable trap
             # and first column of venue was Barabati Stadium
             venue_index = np.where(columns == venue)[0][0]
-            X_pred[venue_pos] = 1
+            X_pred[venue_index] = 1
 
         X_pred = scaler.transform([X_pred])
 
@@ -102,7 +102,6 @@ def predict_score(overs, wickets, runs, wickets_last_5, runs_last_5, bat_team, b
 
         return result
     except Exception as e:
-        print(e)
         return 1 # error code 1
 
 class Randomforest(Resource):
@@ -111,7 +110,6 @@ class Randomforest(Resource):
     def post(self):
 
         data = json.loads(request.get_data())
-        print(data)
         if(len(data)!=8):
             return {"Error":"Invalid Input"},400
         
@@ -125,7 +123,6 @@ class Randomforest(Resource):
         venue = data["venue"]
         score =  int(predict_score(over, wickets, runs, last_5_over_wickets, last_5_over_runs, batting_team, bowling_team, venue))
         if score == 1:
-            print("hereasdfadsfasf")
             return {"Error":"Invalid Input"},400
         del data
         gc.collect()
