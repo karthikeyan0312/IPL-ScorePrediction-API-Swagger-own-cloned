@@ -18,6 +18,7 @@ print(directory)
 
 
 app = Flask(__name__)
+CORS(app, resources={r"/v1/*": {"origins": "*"}})
 api = Api(app)
 cache = TTLCache(maxsize=100, ttl=100)
 
